@@ -1,3 +1,4 @@
+import type React from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   Box,
@@ -8,7 +9,7 @@ import {
   Typography,
   Divider,
 } from '@mui/material'
-import ArchitectureIcon from '@mui/icons-material/Architecture'
+import BarChartIcon from '@mui/icons-material/BarChart'
 import BusinessIcon from '@mui/icons-material/Business'
 import ScienceIcon from '@mui/icons-material/Science'
 import PeopleIcon from '@mui/icons-material/People'
@@ -16,8 +17,8 @@ import BiotechIcon from '@mui/icons-material/Biotech'
 import { useAuthStore } from '../../modules/auth/authStore'
 import { hasRole } from '../../types'
 
-const NAV_ITEMS = [
-  { label: 'System Designer', path: '/system-designer', icon: <ArchitectureIcon fontSize="small" /> },
+const NAV_ITEMS: { label: string; path: string; icon: React.ReactNode }[] = [
+  { label: 'Visualize', path: '/visualize', icon: <BarChartIcon fontSize="small" /> },
 ]
 
 const ADMIN_ITEMS = [
@@ -46,6 +47,17 @@ const ADMIN_ITEMS = [
     minRole: 'lab_admin' as const,
   },
 ]
+
+const navItemSx = {
+  mx: 1,
+  borderRadius: 1.5,
+  mb: 0.25,
+  '&.active': {
+    bgcolor: 'primary.main',
+    color: 'primary.contrastText',
+    '& .MuiListItemIcon-root': { color: 'primary.contrastText' },
+  },
+}
 
 export default function SideNav() {
   const { profile } = useAuthStore()
@@ -76,21 +88,7 @@ export default function SideNav() {
       {/* Main nav */}
       <List dense disablePadding sx={{ pt: 1 }}>
         {NAV_ITEMS.map((item) => (
-          <ListItemButton
-            key={item.path}
-            component={NavLink}
-            to={item.path}
-            sx={{
-              mx: 1,
-              borderRadius: 1.5,
-              mb: 0.25,
-              '&.active': {
-                bgcolor: 'primary.main',
-                color: 'primary.contrastText',
-                '& .MuiListItemIcon-root': { color: 'primary.contrastText' },
-              },
-            }}
-          >
+          <ListItemButton key={item.path} component={NavLink} to={item.path} sx={navItemSx}>
             <ListItemIcon sx={{ minWidth: 32 }}>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 13, fontWeight: 500 }} />
           </ListItemButton>
@@ -109,21 +107,7 @@ export default function SideNav() {
           </Typography>
           <List dense disablePadding>
             {visibleAdminItems.map((item) => (
-              <ListItemButton
-                key={item.path}
-                component={NavLink}
-                to={item.path}
-                sx={{
-                  mx: 1,
-                  borderRadius: 1.5,
-                  mb: 0.25,
-                  '&.active': {
-                    bgcolor: 'primary.main',
-                    color: 'primary.contrastText',
-                    '& .MuiListItemIcon-root': { color: 'primary.contrastText' },
-                  },
-                }}
-              >
+              <ListItemButton key={item.path} component={NavLink} to={item.path} sx={navItemSx}>
                 <ListItemIcon sx={{ minWidth: 32 }}>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 13, fontWeight: 500 }} />
               </ListItemButton>

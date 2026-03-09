@@ -11,6 +11,7 @@ import CompaniesPage from './modules/admin/CompaniesPage'
 import LabsPage from './modules/admin/LabsPage'
 import UsersPage from './modules/admin/UsersPage'
 import InstrumentsPage from './modules/admin/InstrumentsPage'
+import VisualizePage from './modules/visualize/VisualizePage'
 
 export default function App() {
   const { token, profile, fetchMe } = useAuthStore()
@@ -25,14 +26,15 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={token ? <Navigate to="/system-designer" /> : <LoginPage />} />
+          <Route path="/login" element={token ? <Navigate to="/visualize" /> : <LoginPage />} />
           <Route element={token ? <MainLayout /> : <Navigate to="/login" />}>
-            <Route index element={<Navigate to="/system-designer" replace />} />
+            <Route index element={<Navigate to="/visualize" replace />} />
             <Route path="/system-designer" element={<SystemDesignerPage />} />
             <Route path="/admin/companies" element={<CompaniesPage />} />
             <Route path="/admin/labs" element={<LabsPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
             <Route path="/admin/instruments" element={<InstrumentsPage />} />
+            <Route path="/visualize" element={<VisualizePage />} />
           </Route>
         </Routes>
       </BrowserRouter>
