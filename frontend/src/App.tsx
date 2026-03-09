@@ -10,6 +10,7 @@ import SystemDesignerPage from './modules/designer/SystemDesignerPage'
 import CompaniesPage from './modules/admin/CompaniesPage'
 import LabsPage from './modules/admin/LabsPage'
 import UsersPage from './modules/admin/UsersPage'
+import InstrumentsPage from './modules/admin/InstrumentsPage'
 
 export default function App() {
   const { token, profile, fetchMe } = useAuthStore()
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/admin/companies" element={<CompaniesPage />} />
             <Route path="/admin/labs" element={<LabsPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
+            <Route path="/admin/instruments" element={<InstrumentsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

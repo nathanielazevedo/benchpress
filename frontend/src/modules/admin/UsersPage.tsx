@@ -90,6 +90,7 @@ export default function UsersPage() {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 600 }}>Username</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>ID</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Role</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Company</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Lab</TableCell>
@@ -100,7 +101,7 @@ export default function UsersPage() {
             <TableBody>
               {users.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6}>
+                  <TableCell colSpan={7}>
                     <Typography variant="body2" color="text.secondary" textAlign="center" py={2}>
                       No users yet.
                     </Typography>
@@ -113,6 +114,18 @@ export default function UsersPage() {
                 return (
                   <TableRow key={u.id as string} hover>
                     <TableCell>{u.username}</TableCell>
+                    <TableCell>
+                      <Tooltip title="Click to copy">
+                        <Typography
+                          variant="caption"
+                          fontFamily="monospace"
+                          sx={{ cursor: 'pointer', color: 'text.secondary' }}
+                          onClick={() => navigator.clipboard.writeText(u.id as string)}
+                        >
+                          {u.id as string}
+                        </Typography>
+                      </Tooltip>
+                    </TableCell>
                     <TableCell>
                       <Chip
                         label={u.role}

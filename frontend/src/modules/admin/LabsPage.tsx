@@ -70,6 +70,7 @@ export default function LabsPage() {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>ID</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Company</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Created</TableCell>
                 <TableCell width={60} />
@@ -78,7 +79,7 @@ export default function LabsPage() {
             <TableBody>
               {labs.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={4}>
+                  <TableCell colSpan={5}>
                     <Typography variant="body2" color="text.secondary" textAlign="center" py={2}>
                       No labs yet.
                     </Typography>
@@ -90,6 +91,18 @@ export default function LabsPage() {
                 return (
                   <TableRow key={lab.id as string} hover>
                     <TableCell>{lab.name}</TableCell>
+                    <TableCell>
+                      <Tooltip title="Click to copy">
+                        <Typography
+                          variant="caption"
+                          fontFamily="monospace"
+                          sx={{ cursor: 'pointer', color: 'text.secondary' }}
+                          onClick={() => navigator.clipboard.writeText(lab.id as string)}
+                        >
+                          {lab.id as string}
+                        </Typography>
+                      </Tooltip>
+                    </TableCell>
                     <TableCell>{company?.name ?? '—'}</TableCell>
                     <TableCell>{new Date(lab.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>

@@ -19,6 +19,7 @@ async def upsert_heartbeat(db: AsyncSession, body: HeartbeatIn) -> Instrument:
         instrument = Instrument(
             instrument_id=body.instrument_id,
             name=body.name,
+            lab_id=body.lab_id,
             status=InstrumentStatus(body.status),
             last_seen_at=now,
             created_at=now,
@@ -28,6 +29,8 @@ async def upsert_heartbeat(db: AsyncSession, body: HeartbeatIn) -> Instrument:
         instrument.name = body.name
         instrument.status = InstrumentStatus(body.status)
         instrument.last_seen_at = now
+        if body.lab_id is not None:
+            instrument.lab_id = body.lab_id
 
     await db.commit()
     await db.refresh(instrument)

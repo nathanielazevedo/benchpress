@@ -12,6 +12,7 @@ import ArchitectureIcon from '@mui/icons-material/Architecture'
 import BusinessIcon from '@mui/icons-material/Business'
 import ScienceIcon from '@mui/icons-material/Science'
 import PeopleIcon from '@mui/icons-material/People'
+import BiotechIcon from '@mui/icons-material/Biotech'
 import { useAuthStore } from '../../modules/auth/authStore'
 import { hasRole } from '../../types'
 
@@ -36,6 +37,12 @@ const ADMIN_ITEMS = [
     label: 'Users',
     path: '/admin/users',
     icon: <PeopleIcon fontSize="small" />,
+    minRole: 'lab_admin' as const,
+  },
+  {
+    label: 'Instruments',
+    path: '/admin/instruments',
+    icon: <BiotechIcon fontSize="small" />,
     minRole: 'lab_admin' as const,
   },
 ]

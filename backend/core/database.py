@@ -13,6 +13,15 @@ class Settings(BaseSettings):
     super_admin_username: str = "admin"
     super_admin_password: str = "changeme"
 
+    # MinIO
+    minio_endpoint: str = "localhost:9000"
+    minio_access_key: str = "minioadmin"
+    minio_secret_key: str = "minioadmin"
+    minio_bucket: str = "instrument-data"
+    minio_ssl: bool = False
+    # Public endpoint used in presigned URLs — must be reachable by the browser
+    minio_public_endpoint: str = "localhost:9000"
+
 
 settings = Settings()
 

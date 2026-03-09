@@ -59,6 +59,7 @@ export default function CompaniesPage() {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>ID</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>Created</TableCell>
                 <TableCell width={60} />
               </TableRow>
@@ -66,7 +67,7 @@ export default function CompaniesPage() {
             <TableBody>
               {companies.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={3}>
+                  <TableCell colSpan={4}>
                     <Typography variant="body2" color="text.secondary" textAlign="center" py={2}>
                       No companies yet.
                     </Typography>
@@ -76,6 +77,18 @@ export default function CompaniesPage() {
               {companies.map((c) => (
                 <TableRow key={c.id as string} hover>
                   <TableCell>{c.name}</TableCell>
+                  <TableCell>
+                    <Tooltip title="Click to copy">
+                      <Typography
+                        variant="caption"
+                        fontFamily="monospace"
+                        sx={{ cursor: 'pointer', color: 'text.secondary' }}
+                        onClick={() => navigator.clipboard.writeText(c.id as string)}
+                      >
+                        {c.id as string}
+                      </Typography>
+                    </Tooltip>
+                  </TableCell>
                   <TableCell>{new Date(c.created_at).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <Tooltip title="Delete">

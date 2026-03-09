@@ -41,3 +41,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+
+# logs
+mock_logs

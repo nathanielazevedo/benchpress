@@ -11,13 +11,16 @@ public sealed class LabInstrumentAgent : IInstrumentAgent
     private readonly AgentConfig _config;
     private readonly HttpClient _http;
     private readonly ILogger _logger;
+    private readonly MinioUploader _uploader;
     private CancellationTokenSource? _cts;
+    private FileWatcher? _watcher;
 
     public LabInstrumentAgent(AgentConfig config, HttpClient http, ILogger logger)
     {
         _config = config;
         _http = http;
         _logger = logger;
+        _uploader = new MinioUploader(config, logger);
         InstrumentId = config.InstrumentId;
         Name = config.Name;
     }
@@ -28,6 +31,14 @@ public sealed class LabInstrumentAgent : IInstrumentAgent
         var token = _cts.Token;
 
         _logger.Log($"Agent '{Name}' ({InstrumentId}) starting. Backend: {_config.BackendUrl}");
+
+        // Ensure the bucket exists before we start receiving files
+        await _uploader.EnsureBucketAsync(token);
+
+        // Start the file watcher
+        _watcher = new FileWatcher(_config.WatchPath, _logger, token);
+        _watcher.OnFileReady += async (path, fileCt) =>
+            await _uploader.UploadFileAsync(path, fileCt);
 
         while (!token.IsCancellationRequested)
         {
@@ -40,6 +51,7 @@ public sealed class LabInstrumentAgent : IInstrumentAgent
     public async Task StopAsync()
     {
         _logger.Log($"Agent '{Name}' stopping.");
+        _watcher?.Dispose();
         _cts?.Cancel();
         await Task.CompletedTask;
     }
@@ -50,7 +62,14 @@ public sealed class LabInstrumentAgent : IInstrumentAgent
     {
         try
         {
-            var payload = new { instrument_id = InstrumentId, name = Name, status = "online" };
+            var payload = new
+            {
+                instrument_id = InstrumentId,
+                name          = Name,
+                status        = "online",
+                lab_id        = string.IsNullOrWhiteSpace(_config.LabId)     ? null : _config.LabId,
+                company_id    = string.IsNullOrWhiteSpace(_config.CompanyId) ? null : _config.CompanyId,
+            };
             var resp = await _http.PostAsJsonAsync($"{_config.BackendUrl}/api/instruments/heartbeat", payload, ct);
             _logger.Log($"Heartbeat → {(int)resp.StatusCode}");
         }
